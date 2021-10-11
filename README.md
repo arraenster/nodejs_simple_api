@@ -3,6 +3,11 @@ Simple REST api made for demonstration purposes
 
 Created with NodeJS.
 
+### Startup
+
+1. `npm install`
+2. `node api`
+
 ### List of endpoints:
 * GET http://localhost:8081/users
 * GET http://localhost:8081/users/1

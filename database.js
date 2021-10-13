@@ -3,30 +3,34 @@ const sqlite3 = require('sqlite3').verbose();
 var connection = null;
 
 const connect = function() {
-
-    if (!connection) {
-        connection = new sqlite3.Database('./data/test.db', (err) => {
-            if (err) {
-              console.error(err.message);
-            }
-            console.log('Connected to the database.');
-        });
-    }
-    
-    return connection;
+    return new Promise((resolve, reject) => {
+        if (!connection) {
+            connection = new sqlite3.Database('./data/test.db', (err) => {
+                if (err) {
+                  reject(err);
+                }
+                console.log('Connected to the database.');
+            });
+        }
+        
+        resolve(connection);
+    });    
 };
 
 const getUsers = function() {
+    return connect().then(getAllUsers);    
+}
 
+function getAllUsers(dbConnection) {
     return new Promise((resolve, reject) => {
-        let sql = `SELECT * FROM users;`;
+        const sql = `SELECT * FROM users;`;
 
-        connect().all(sql, [], (err, users) => {
+        dbConnection.all(sql, [], (err, users) => {
             if (err) {
                 reject(err);
             }
             
-            connect().close((err) => {
+            dbConnection.close((err) => {
                 if (err) {
                     reject(err);
                 }
@@ -35,7 +39,7 @@ const getUsers = function() {
 
             resolve(users);            
         });  
-    });
+    });  
 }
 
 /*sql = `SELECT * FROM users WHERE id  = ?`;

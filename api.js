@@ -4,7 +4,6 @@ const app = require('./app');
 
 const { API_PORT } = require('./consts');
 
-expressApp.use(express.urlencoded());
 expressApp.use(express.json());
 expressApp.use(function(req, res, next) {
     res.setHeader("Content-Type", "application/json");

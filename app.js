@@ -16,8 +16,7 @@ const getUsers = function(response) {
 const getUsersFromDatabase = function(response) {
     console.log('Fetching users from database...');
 
-    const usersPromise = database.getUsers();
-    usersPromise.then(
+    database.getUsers().then(
         (users) => response.end(JSON.stringify(users)),
         (err) => response.end(err)
     ).catch((err) => response.end(err));

@@ -11,8 +11,14 @@ expressApp.use(function(req, res, next) {
     next();
 });
 
-expressApp.get('/users', function (req, res) {
-    app.getUsers(res);
+expressApp.get('/users/source/:type', function (req, res) {
+    if (req.params.type === 'text') {
+        app.getUsers(res);
+    } else if (req.params.type === 'database') {
+        app.getUsersFromDatabase(res);
+    } else {
+        res.end('Wrong type. Allowed types: text, database.');
+    }    
 })
 
 expressApp.get('/users/:id', function (req, res) {

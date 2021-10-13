@@ -1,4 +1,5 @@
 var fs = require('fs');
+var database = require('./database');
 
 /**
  * Get users from JSON file
@@ -10,6 +11,16 @@ const getUsers = function(response) {
     fs.readFile( __dirname + "/data/" + "users.json", 'utf8', function (err, data) {        
         response.end(data)
     });
+}
+
+const getUsersFromDatabase = function(response) {
+    console.log('Fetching users from database...');
+
+    const usersPromise = database.getUsers();
+    usersPromise.then(
+        (users) => response.end(JSON.stringify(users)),
+        (err) => response.end(err)
+    ).catch((err) => response.end(err));
 }
 
 /**
@@ -84,5 +95,6 @@ const deleteUser = function(userId, response) {
      getUsers,
      getUser,
      addUser,
-     deleteUser
+     deleteUser,
+     getUsersFromDatabase
  }
